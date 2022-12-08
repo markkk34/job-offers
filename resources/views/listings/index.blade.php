@@ -1,6 +1,4 @@
-@extends('layout')
-
-@section('content')
+<x-layout>
     @include('partials/_hero')
     @include('partials/_search')
 
@@ -11,4 +9,4 @@
     @else
         <span>Nothing has been found</span>
     @endunless
-@endsection
+</x-layout>

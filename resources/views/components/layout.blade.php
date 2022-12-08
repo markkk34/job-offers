@@ -47,7 +47,7 @@
 </nav>
 
 <section>
-    @yield('content')
+    {{$slot}}
 </section>
 
 <footer

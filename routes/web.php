@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ListingController;
 use App\Models\Listing;
 use Illuminate\Support\Facades\Route;
 
@@ -14,23 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view(
-        'listings',
-        [
-            'listings' => Listing::all(),
-        ]
-    );
-})->name('homepage');
+Route::get('/', [ListingController::class, 'index'])
+    ->name('homepage');
 
 /**
  * Example of Route Model Binding
  */
-Route::get('/listings/{listing}', function (Listing $listing) {
-    return view(
-        'listing',
-        [
-            'listing' => $listing,
-        ]
-    );
-});
+Route::get('/listings/{listing}', [ListingController::class, 'show']);
