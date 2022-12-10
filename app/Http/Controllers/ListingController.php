@@ -6,7 +6,9 @@ use App\Models\Listing;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ListingController extends Controller
 {
@@ -42,5 +44,37 @@ class ListingController extends Controller
                 'listing' => $listing,
             ]
         );
+    }
+
+    /**
+     * Represents form for adding
+     *
+     * @return Application|Factory|View
+     */
+    public function create()
+    {
+        return view('listings.create');
+    }
+
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'title'       => 'required',
+            'company'     => ['required', Rule::unique('listings', 'company')],
+            'location'    => 'required',
+            'email'       => ['required', 'email'],
+            'website'     => ['required', 'url'],
+            'tags'        => 'required',
+            'description' => 'required',
+        ]);
+
+        Listing::create($data);
+
+        return redirect()->route('homepage')->with('success', 'Ur post has been added');
     }
 }
