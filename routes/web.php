@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ListingController;
-use App\Models\Listing;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,3 +41,13 @@ Route::delete('/listings/{listing}', [ListingController::class, 'destroy']);
  * Example of Route Model Binding
  */
 Route::get('/listings/{listing}', [ListingController::class, 'show']);
+
+Route::get('/register', [UserController::class, 'create']);
+
+Route::post('/users', [UserController::class, 'store']);
+
+Route::post('/logout', [UserController::class, 'logout']);
+
+Route::get('/login', [UserController::class, 'login']);
+
+Route::post('/users/authenticate', [UserController::class, 'authenticate']);
