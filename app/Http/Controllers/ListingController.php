@@ -54,7 +54,7 @@ class ListingController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function create()
+    public function create(): View|Factory|Application
     {
         return view('listings.create');
     }
@@ -99,7 +99,12 @@ class ListingController extends Controller
         );
     }
 
-    public function update(Request $request, Listing $listing)
+    /**
+     * @param Request $request
+     * @param Listing $listing
+     * @return RedirectResponse
+     */
+    public function update(Request $request, Listing $listing): RedirectResponse
     {
         $data = $request->validate([
             'title'       => 'required',
@@ -118,5 +123,15 @@ class ListingController extends Controller
         $listing->update($data);
 
         return back()->with('success', 'Ur post has been updated');
+    }
+
+    /**
+     * @param Listing $listing
+     * @return RedirectResponse
+     */
+    public function destroy(Listing $listing): RedirectResponse
+    {
+        $listing->delete();
+        return redirect()->route('homepage')->with('success', 'The post has been deleted');
     }
 }
