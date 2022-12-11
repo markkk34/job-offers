@@ -9,4 +9,7 @@
     @else
         <span>Nothing has been found</span>
     @endunless
+    <div class="mt-6 p-4">
+        {{$listings->links()}}
+    </div>
 </x-layout>

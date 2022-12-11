@@ -19,13 +19,16 @@ class ListingController extends Controller
      */
     public function index(): View|Factory|Application
     {
+//        dd(Listing::latest()
+//            ->filter(request(['tag', 'search']))
+//            ->paginate(2));
         return view(
             'listings.index',
             [
                 'listings' =>
                     Listing::latest()
                         ->filter(request(['tag', 'search']))
-                        ->get(),
+                        ->paginate(5),
             ]
         );
     }
@@ -72,6 +75,10 @@ class ListingController extends Controller
             'tags'        => 'required',
             'description' => 'required',
         ]);
+
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('logos', 'public');
+        }
 
         Listing::create($data);
 
