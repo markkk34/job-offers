@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class ListingController extends Controller
@@ -120,6 +121,10 @@ class ListingController extends Controller
 
         if ($request->hasFile('logo')) {
             $data['logo'] = $request->file('logo')->store('logos', 'public');
+
+            if (!empty($listing['logo']) && Storage::exists('public/' . $listing['logo'])) {
+                Storage::delete('public/' . $listing['logo']);
+            }
         }
 
         $listing->update($data);
