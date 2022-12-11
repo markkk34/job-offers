@@ -136,4 +136,16 @@ class ListingController extends Controller
         $listing->delete();
         return redirect()->route('homepage')->with('success', 'The post has been deleted');
     }
+
+    /**
+     * @return Factory|View|Application
+     */
+    public function manage(): Factory|View|Application
+    {
+        return view(
+            'listings.manage',
+            [
+                'listings' => auth()->user()->listings()->get(),
+            ]);
+    }
 }
