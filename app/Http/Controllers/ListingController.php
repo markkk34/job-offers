@@ -84,4 +84,39 @@ class ListingController extends Controller
 
         return redirect()->route('homepage')->with('success', 'Ur post has been added');
     }
+
+    /**
+     * @param Listing $listing
+     * @return Application|Factory|View
+     */
+    public function edit(Listing $listing): View|Factory|Application
+    {
+        return view(
+            'listings.edit',
+            [
+                'listing' => $listing,
+            ]
+        );
+    }
+
+    public function update(Request $request, Listing $listing)
+    {
+        $data = $request->validate([
+            'title'       => 'required',
+            'company'     => ['required'],
+            'location'    => 'required',
+            'email'       => ['required', 'email'],
+            'website'     => ['required', 'url'],
+            'tags'        => 'required',
+            'description' => 'required',
+        ]);
+
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
+        $listing->update($data);
+
+        return back()->with('success', 'Ur post has been updated');
+    }
 }
