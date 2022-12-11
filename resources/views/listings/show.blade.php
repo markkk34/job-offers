@@ -46,16 +46,20 @@
             </div>
         </x-card>
         @auth()
-            <x-card class="mt-4 p-2 flex space-x-6">
-                <a href="/listings/{{$listing['id']}}/edit">
-                    <i class="fa-solid fa-pencil"></i>Edit
-                </a>
-                <form method="POST" action="/listings/{{$listing['id']}}">
-                    @csrf
-                    @method('DELETE')
-                    <button>Delete</button>
-                </form>
-            </x-card>
+            @if(auth()->id() === $listing['user_id'])
+                <x-card class="mt-4 p-2 flex space-x-6">
+                    <a href="/listings/{{$listing['id']}}/edit">
+                        <i class="fa-solid fa-pencil"></i>Edit
+                    </a>
+                    <form method="POST" action="/listings/{{$listing['id']}}">
+                        @csrf
+                        @method('DELETE')
+                        <button>Delete</button>
+                    </form>
+                </x-card>
+            @else
+                <p class="text-center">It's not posted by u, no access to edit</p>
+            @endif
         @endauth
     </div>
 </x-layout>

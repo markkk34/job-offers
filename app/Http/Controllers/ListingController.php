@@ -109,6 +109,10 @@ class ListingController extends Controller
      */
     public function update(Request $request, Listing $listing): RedirectResponse
     {
+        if (auth()->id() !== $listing['user_id']) {
+            abort(403, 'User is not authorised');
+        }
+
         $data = $request->validate([
             'title'       => 'required',
             'company'     => ['required'],
@@ -138,6 +142,10 @@ class ListingController extends Controller
      */
     public function destroy(Listing $listing): RedirectResponse
     {
+        if (auth()->id() !== $listing['user_id']) {
+            abort(403, 'User is not authorised');
+        }
+
         $listing->delete();
         return redirect()->route('homepage')->with('success', 'The post has been deleted');
     }
