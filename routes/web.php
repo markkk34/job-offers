@@ -24,53 +24,58 @@ use Illuminate\Support\Facades\Route;
 // update - Update listing
 // destroy - Delete listing
 
-// Show all listings
-Route::get('/', [ListingController::class, 'index'])
-    ->name('homepage');
+Route::controller(ListingController::class)->group(function () {
+    // Show all listings
+    Route::get('/', [ListingController::class, 'index'])
+        ->name('homepage');
 
-// Add listing page
-Route::get('/listings/create', [ListingController::class, 'create'])
-    ->middleware('auth');
+    // Add listing page
+    Route::get('/listings/create', [ListingController::class, 'create'])
+        ->middleware('auth');
 
-// Add listing handler
-Route::post('/listings', [ListingController::class, 'store']);
+    // Add listing handler
+    Route::post('/listings', [ListingController::class, 'store']);
 
-// Edit listing page
-Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])
-    ->middleware('auth');
+    // Edit listing page
+    Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])
+        ->middleware('auth');
 
-// Manage listings page
-Route::get('/listings/manage', [ListingController::class, 'manage'])
-    ->middleware('auth');
+    // Manage listings page
+    Route::get('/listings/manage', [ListingController::class, 'manage'])
+        ->middleware('auth');
 
-// Edit listing handler
-Route::put('/listings/{listing}', [ListingController::class, 'update'])
-    ->middleware('auth');
+    // Edit listing handler
+    Route::put('/listings/{listing}', [ListingController::class, 'update'])
+        ->middleware('auth');
 
-// Delete listing
-Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])
-    ->middleware('auth');
+    // Delete listing
+    Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])
+        ->middleware('auth');
 
-// Show single listing
-Route::get('/listings/{listing}', [ListingController::class, 'show']);
+    // Show single listing
+    Route::get('/listings/{listing}', [ListingController::class, 'show']);
+});
 
-// Register page
-Route::get('/register', [UserController::class, 'create'])
-    ->middleware('guest');
 
-// Register handler
-Route::post('/users', [UserController::class, 'store'])
-    ->middleware('guest');
+Route::controller(UserController::class)->group(function() {
+    // Register page
+    Route::get('/register', [UserController::class, 'create'])
+        ->middleware('guest');
 
-// Logout handler
-Route::post('/logout', [UserController::class, 'logout'])
-    ->middleware('auth');
+    // Register handler
+    Route::post('/users', [UserController::class, 'store'])
+        ->middleware('guest');
 
-// Login page
-Route::get('/login', [UserController::class, 'login'])
-    ->name('login')
-    ->middleware('guest');
+    // Logout handler
+    Route::post('/logout', [UserController::class, 'logout'])
+        ->middleware('auth');
 
-// Login handler
-Route::post('/users/authenticate', [UserController::class, 'authenticate'])
-    ->middleware('guest');
+    // Login page
+    Route::get('/login', [UserController::class, 'login'])
+        ->name('login')
+        ->middleware('guest');
+
+    // Login handler
+    Route::post('/users/authenticate', [UserController::class, 'authenticate'])
+        ->middleware('guest');
+});
